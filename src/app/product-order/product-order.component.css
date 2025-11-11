@@ -1,0 +1,183 @@
+/* ======================
+   Booking Page
+   ====================== */
+
+.booking {
+  padding: 6rem 0;
+  background-color: #ffffff;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto 4rem;
+  line-height: 1.6;
+}
+
+.booking-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+/* ======================
+   Pricing Card
+   ====================== */
+
+.pricing-card {
+  flex: 1;
+  min-width: 300px;
+  max-width: 380px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-card h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.price span,
+.fee span {
+  font-weight: 400;
+  font-size: 1rem;
+  color: #777;
+}
+
+.fee {
+  font-size: 1.25rem;
+  color: #333;
+  margin-top: 0.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.pricing-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricing-details li {
+  padding: 0.5rem 0;
+  color: #555;
+  font-size: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* ======================
+   Booking Form
+   ====================== */
+
+.booking-form {
+  flex: 1;
+  min-width: 320px;
+  background-color: #fdfdfd;
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #333;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+  outline: none;
+}
+
+.btn-primary {
+  background-color: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #333;
+  transform: translateY(-3px);
+}
+
+/* ======================
+   Responsive Design
+   ====================== */
+
+@media (max-width: 768px) {
+  .booking-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pricing-card,
+  .booking-form {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,236 @@
+.hero-contact {
+  color: var(--perfume-text);
+  padding: 50px 10%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-family: "Didot", "Playfair Display", serif;
+  font-size: 2.2rem;
+  color: var(--perfume-black);
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.newspaper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem; 
+  width: 100%;
+  max-width: 1100px;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--perfume-surface);
+  backdrop-filter: blur(10px);
+  padding: 25px 35px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.box:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.10);
+}
+
+.productimg {
+  width: 300px;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+  background-color: #f2f2f2;
+  transition: transform 0.3s ease;
+}
+
+.details {
+  flex: 1;
+  margin-left: 40px;
+}
+
+.productname {
+  font-family: "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--perfume-black);
+  margin-bottom: 0.5rem;
+}
+
+.productcategory {
+  font-family: "Helvetica Neue", sans-serif;
+  color: var(--perfume-muted);
+  font-size: 14px;
+  margin-bottom: 150px;
+}
+
+.price {
+  font-family: "Helvetica Neue", sans-serif;
+  color: var(--perfume-black);
+  font-size: 14px;
+  margin-top: 0.8rem;
+}
+
+.cart-btn {
+  background: transparent;
+  border: 1px solid var(--perfume-accent);
+  color: var(--perfume-black);
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.cart-btn:hover {
+  background-color: var(--perfume-accent);
+  color: #fff;
+  border-color: var(--perfume-accent);
+  transform: translateY(-2px);
+}
+
+.cart-btn:active {
+  transform: translateY(0);
+  opacity: 0.9;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  background: rgba(8, 8, 8, 0.856);
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  filter: blur(3px);
+  z-index: 0;
+}
+
+.modal.open {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 5px;
+  padding: 25px 40px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease forwards;
+  position: relative;
+}
+
+.modal-content img {
+  width: 95%;
+  height: auto;
+  margin-bottom: 18px;
+  transition: transform 0.3s ease;
+  background-color: black;
+}
+
+.modal-title {
+  font-family: "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 20px;
+}
+
+.modal-desc {
+  font-family: "Helvetica Neue", sans-serif;
+  color: #444;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.modal-price {
+  font-family: "Helvetica Neue", sans-serif;
+  color: #000;
+  font-size: 1.05rem;
+  margin-top: 0.8rem;
+  margin-bottom: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.close:hover {
+  color: #000;
+}
+
+.zoomable {
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+  cursor: zoom-in;
+  max-width: 100%;
+  height: auto;
+}
+
+.zoomed {
+  cursor: zoom-out;
+  transform: scale(1.7);
+}
+
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .box {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .productimg {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .details {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .cart {
+    align-self: flex-end;
+  }
+}

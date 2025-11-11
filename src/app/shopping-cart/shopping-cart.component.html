@@ -1,0 +1,84 @@
+<div class="cart-container" *ngIf="cart.length > 0; else emptyCart">
+  <h2>Your Cart</h2>
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of cart; let i = index">
+        <td>{{ item.productName }}</td>
+        <td>₱{{ item.price | number:'1.0-0' }}</td>
+        <td>
+          <button (click)="decreaseQuantity(i)">-</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="increaseQuantity(i)">+</button>
+        </td>
+        <td>₱{{ item.price * item.quantity | number:'1.0-0' }}</td>
+        <td><button class="remove" (click)="removeItem(i)">X</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="cart-summary">
+    <p>Standard Shipping Fee: ₱{{ shippingFee }}</p>
+    <p><strong>Total: ₱{{ total | number:'1.0-0' }}</strong></p>
+    <div class="cart-btn">
+      <button class="checkout" (click)="checkout()">Checkout</button>
+      <button class="clear" (click)="clearCart()">Clear Cart</button>
+    </div>
+  </div>
+</div>
+
+<div class="checkout-modal" *ngIf="showReceipt">
+  <div class="modal-content">
+    <span class="close" (click)="closeReceipt()">&times;</span>
+    <img src="assets/icon.png" alt="Logo" class="modal-logo" />
+    <h3 class="modal-title">Receipt</h3>
+    <p><strong>Date:</strong> {{ purchaseDate | date:'fullDate' }}</p>
+    
+    <table class="receipt-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart">
+          <td>{{ item.productName }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₱{{ item.price * item.quantity | number:'1.0-0' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Shipping Fee:</strong> ₱{{ shippingFee }}</p>
+    <p><strong>Total:</strong> ₱{{ total | number:'1.0-0' }}</p>
+    <button class="confirm" (click)="confirmPurchase()">Confirm Purchase</button>
+  </div>
+</div>
+
+<div class="checkout-modal" *ngIf="showThankYou">
+  <div class="modal-content">
+    <span class="close" (click)="closeThankYou()">&times;</span>
+    <img src="assets/icon.png" alt="Logo" class="modal-logo" />
+    <h3 class="modal-title">Thank You!</h3>
+    <p class="modal-desc">Your order’s on its way.<br>
+                          Soon, it will be yours.</p>
+  </div>
+</div>
+
+<ng-template #emptyCart>
+  <div class="empty-cart">
+    <p>Your cart is empty.</p>
+    <button class="return" (click)="goToProducts()">Return to Products</button>
+  </div>
+</ng-template>

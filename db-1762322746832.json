@@ -1,0 +1,27 @@
+{
+  "product": [
+    {
+      "categoryName": "Prints",
+      "products": [
+        {
+          "id": 1,
+          "name": "White Dreams | A3",
+          "description": "Prints of Bee meeting her favorite character",
+          "categoryName": "Prints",
+          "imageFile": "assets/products/whitedreams.avif",
+          "price": "1200"
+        },
+        {
+          "id": 2,
+          "name": "The Seven Suiseis | A4 Landscape",
+          "description": "The Magnificent Seven Suiseis in cosplay, in frame",
+          "categoryName": "Prints",
+          "imageFile": "assets/products/sevensuiseis.avif",
+          "price": "2000"
+        }
+      ]
+    }
+  ],
+  "orderitem": [],
+  "bookings": []
+}

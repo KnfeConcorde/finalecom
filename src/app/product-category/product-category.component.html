@@ -1,0 +1,63 @@
+<div class="container-fluid hero-contact p-0 m-0">
+  <h2 class="accent-underline">Fragrance Collection</h2>
+
+  <div *ngFor="let category of productsCategory" class="col-md-4 newspaper">
+    <div
+      class="box"
+      *ngFor="let prod of category.products"
+      (click)="openProductModal(prod)"
+    >
+      <img
+        class="productimg"
+        [src]="prod.imageFile && prod.imageFile.includes('/') ? prod.imageFile : 'assets/products/' + prod.imageFile + '.png'"
+        [alt]="prod.name"
+      />
+
+      <div class="details">
+        <p class="productname">'{{ prod.name }}'</p>
+        <p class="productcategory">Notes: {{ prod.description }}</p>
+        <p class="price">₱{{ prod.price }}</p>
+      </div>
+
+      <button
+        class="cart-btn"
+        type="button"
+        (click)="$event.stopPropagation(); openProductModal(prod)"
+      >
+        View
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal"
+  [ngClass]="{ open: selectedProduct }"
+  (click)="closeProductModal($event)"
+>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <span class="close" (click)="onCloseClick()">&times;</span>
+    <img
+      #zoomImage
+      class="zoomable"
+      [src]="selectedProduct ? (selectedProduct.imageFile && selectedProduct.imageFile.includes('/') ? selectedProduct.imageFile : 'assets/products/' + selectedProduct.imageFile + '.png') : ''"
+      [alt]="selectedProduct?.name"
+      (mousemove)="onImageHover($event, zoomImage)"
+      (mouseleave)="resetZoom(zoomImage)"
+      (click)="toggleZoom(zoomImage); $event.stopPropagation()"
+    />
+    <h3 class="modal-title">'{{ selectedProduct?.name }}'</h3>
+    <p class="modal-desc">{{ selectedProduct?.description }}</p>
+    <p class="modal-price">{{ selectedProduct?.price }}</p>
+
+    <button
+      class="cart-btn"
+      type="button"
+      (click)="selectedProduct && onAddToCart(selectedProduct)"
+    >
+      Add to Cart
+    </button>
+
+  </div>
+</div>

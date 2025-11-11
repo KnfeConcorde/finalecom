@@ -1,0 +1,65 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --perfume-bg: #faf6f2;           /* soft ivory */
+  --perfume-surface: #ffffff;      /* white cards */
+  --perfume-text: #1a1a1a;         /* deep charcoal */
+  --perfume-muted: #5c5c5c;        /* muted gray */
+  --perfume-accent: #c8a97e;       /* soft gold */
+  --perfume-accent-dark: #a9865e;  /* deeper gold */
+  --perfume-black: #0e0e0e;        /* near black */
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--perfume-bg);
+  color: var(--perfume-text);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Headings for a luxe serif feel */
+h1, h2, h3, h4 {
+  font-family: "Didot", "Playfair Display", serif;
+  letter-spacing: 0.5px;
+}
+
+/* Accent underline helper */
+.accent-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.accent-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 40%;
+  height: 2px;
+  background: var(--perfume-accent);
+}
+
+/* Gold outline button */
+.btn-outline-gold {
+  background: transparent;
+  color: var(--perfume-black);
+  border: 1px solid rgba(0,0,0,0.25);
+  border-color: var(--perfume-accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 12px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-gold:hover {
+  background: var(--perfume-accent);
+  color: #fff;
+  border-color: var(--perfume-accent);
+}
