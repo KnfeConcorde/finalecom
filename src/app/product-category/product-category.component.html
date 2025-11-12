@@ -1,0 +1,68 @@
+<section class="prints">
+  <div class="container">
+    <h1 class="section-title">Limited Edition Prints</h1>
+    <p class="section-subtitle">
+      Bring the beauty of film photography into your home. Each print is carefully developed and signed.
+    </p>
+
+    <!-- Success Message -->
+    <div class="success-message" *ngIf="orderSubmitted">
+      <p>✓ Order placed successfully! We'll contact you soon.</p>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-banner" *ngIf="errorMessage">
+      <p>✗ {{ errorMessage }}</p>
+    </div>
+
+    <div class="prints-wrapper">
+      <!-- Print Card -->
+      <div class="print-card" *ngFor="let print of prints">
+        <img [src]="print.image" [alt]="print.title" class="print-image" />
+        <h2>{{ print.title }}</h2>
+        <p class="price">₱{{ print.price }}</p>
+        <button class="btn-primary" (click)="addToCart(print)">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="cart-summary" *ngIf="cart.length > 0">
+      <h3>Your Cart</h3>
+      <ul>
+        <li *ngFor="let item of cart">{{ item.title }} - ₱{{ item.price }}</li>
+      </ul>
+      <p class="estimate-label">Total:</p>
+      <p class="estimate-amount">₱{{ calculateCartTotal() | number }}</p>
+    </div>
+
+    <!-- Order Form -->
+    <form class="booking-form" (ngSubmit)="submitOrder($event)" #orderForm="ngForm">
+      <div class="form-group">
+        <label for="name">Full Name <span class="required">*</span></label>
+        <input id="name" type="text" [(ngModel)]="orderData.name" name="name" required #nameInput="ngModel"/>
+        <span class="error-message" *ngIf="nameInput.invalid && nameInput.touched">
+          Name is required
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input id="email" type="email" [(ngModel)]="orderData.email" name="email" required email #emailInput="ngModel"/>
+        <span class="error-message" *ngIf="emailInput.invalid && emailInput.touched">
+          Please enter a valid email
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Additional Notes</label>
+        <textarea id="message" rows="4" [(ngModel)]="orderData.message" name="message" placeholder="Special instructions or preferred shipping..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="!orderForm.valid || orderSubmitted || isSubmitting">
+        <span *ngIf="!isSubmitting && !orderSubmitted">Place Order</span>
+        <span *ngIf="isSubmitting">Sending...</span>
+        <span *ngIf="orderSubmitted">Submitted!</span>
+      </button>
+    </form>
+  </div>
+</section>
