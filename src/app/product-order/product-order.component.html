@@ -5,7 +5,18 @@
       Capture stunning moments with professional photography. All shot on film.
     </p>
 
+    <!-- Success Message -->
+    <div class="success-message" *ngIf="submitted">
+      <p>✓ Booking submitted successfully! We'll contact you soon.</p>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-banner" *ngIf="errorMessage">
+      <p>✗ {{ errorMessage }}</p>
+    </div>
+
     <div class="booking-wrapper">
+      <!-- Pricing Card -->
       <div class="pricing-card">
         <h2>Session Pricing</h2>
         <p class="price">₱1,200 <span>/ per roll</span></p>
@@ -16,69 +27,101 @@
           <li>Professional lighting setup</li>
           <li>Location shoot available</li>
         </ul>
+        
+        <!-- Total Calculation -->
+        <div class="total-estimate" *ngIf="formData.rolls > 0">
+          <hr>
+          <p class="estimate-label">Your Estimate:</p>
+          <p class="estimate-amount">₱{{ calculateTotal() | number }}</p>
+          <p class="estimate-breakdown">
+            ({{ formData.rolls }} {{ formData.rolls === 1 ? 'roll' : 'rolls' }} + talent fee)
+          </p>
+        </div>
       </div>
 
-<form class="booking-form" (submit)="onSubmit($event)">
-  <div class="form-group">
-    <label for="name">Full Name</label>
-    <input
-      id="name"
-      type="text"
-      [(ngModel)]="formData.name"
-      name="name"
-      placeholder="Enter your name"
-      required
-    />
-  </div>
+      <!-- Booking Form -->
+      <form class="booking-form" (ngSubmit)="onSubmit($event)" #bookingForm="ngForm">
+        <div class="form-group">
+          <label for="name">Full Name <span class="required">*</span></label>
+          <input
+            id="name"
+            type="text"
+            [(ngModel)]="formData.name"
+            name="name"
+            placeholder="Enter your name"
+            required
+            #nameInput="ngModel"
+          />
+          <span class="error-message" *ngIf="nameInput.invalid && nameInput.touched">
+            Name is required
+          </span>
+        </div>
 
-  <div class="form-group">
-    <label for="email">Email Address</label>
-    <input
-      id="email"
-      type="email"
-      [(ngModel)]="formData.email"
-      name="email"
-      placeholder="Enter your email"
-      required
-    />
-  </div>
+        <div class="form-group">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input
+            id="email"
+            type="email"
+            [(ngModel)]="formData.email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            email
+            #emailInput="ngModel"
+          />
+          <span class="error-message" *ngIf="emailInput.invalid && emailInput.touched">
+            Please enter a valid email
+          </span>
+        </div>
 
-  <div class="form-group">
-    <label for="date">Preferred Date</label>
-    <input
-      id="date"
-      type="date"
-      [(ngModel)]="formData.date"
-      name="date"
-      required
-    />
-  </div>
+        <div class="form-group">
+          <label for="date">Preferred Date <span class="required">*</span></label>
+          <input
+            id="date"
+            type="date"
+            [(ngModel)]="formData.date"
+            name="date"
+            [min]="minDate"
+            required
+            #dateInput="ngModel"
+          />
+          <span class="error-message" *ngIf="dateInput.invalid && dateInput.touched">
+            Please select a date
+          </span>
+        </div>
 
-  <div class="form-group">
-    <label for="rolls">Number of Rolls</label>
-    <select id="rolls" [(ngModel)]="formData.rolls" name="rolls" required>
-      <option value="1">1 roll</option>
-      <option value="2">2 rolls</option>
-      <option value="3">3 rolls</option>
-      <option value="4">4 rolls</option>
-      <option value="5">5 rolls</option>
-    </select>
-  </div>
+        <div class="form-group">
+          <label for="rolls">Number of Rolls <span class="required">*</span></label>
+          <select id="rolls" [(ngModel)]="formData.rolls" name="rolls" required>
+            <option [value]="1">1 roll</option>
+            <option [value]="2">2 rolls</option>
+            <option [value]="3">3 rolls</option>
+            <option [value]="4">4 rolls</option>
+            <option [value]="5">5 rolls</option>
+          </select>
+        </div>
 
-  <div class="form-group">
-    <label for="message">Additional Notes</label>
-    <textarea
-      id="message"
-      rows="4"
-      [(ngModel)]="formData.message"
-      name="message"
-      placeholder="Tell us about your concept or preferred setup..."
-    ></textarea>
-  </div>
+        <div class="form-group">
+          <label for="message">Additional Notes</label>
+          <textarea
+            id="message"
+            rows="4"
+            [(ngModel)]="formData.message"
+            name="message"
+            placeholder="Tell us about your concept or preferred setup..."
+          ></textarea>
+        </div>
 
-  <button type="submit" class="btn-primary">Submit Booking</button>
-</form>
-
+        <button 
+          type="submit" 
+          class="btn-primary" 
+          [disabled]="!bookingForm.valid || submitted || isSubmitting"
+        >
+          <span *ngIf="!isSubmitting && !submitted">Submit Booking</span>
+          <span *ngIf="isSubmitting">Sending...</span>
+          <span *ngIf="submitted">Submitted!</span>
+        </button>
+      </form>
     </div>
   </div>
 </section>

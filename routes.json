@@ -1,5 +1,6 @@
 {
   "/api/product": "/product",
   "/api/orderitem": "/orderitem",
-  "/api/menu": "/menu"
+  "/api/menu": "/menu",
+  "/api/booking": "/booking"
 }

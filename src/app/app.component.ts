@@ -2,16 +2,18 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { MainBodyComponent } from './main-body/main-body.component';
-
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, HeaderComponent,FooterComponent],
+  standalone: true,             // ✅ Make it standalone
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  imports: [
+    HeaderComponent,            // ✅ For <app-header>
+    FooterComponent,            // ✅ For <app-footer>
+    RouterOutlet                // ✅ For <router-outlet>
+  ]
 })
 export class AppComponent {
-  title = 'product';
+  title = 'finalecom';
 }
