@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.menuService.getData().subscribe((data) => {
       this.menus = data;
+      
     });
   }
 }

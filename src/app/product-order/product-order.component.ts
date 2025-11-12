@@ -1,136 +1,85 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import emailjs from '@emailjs/browser';
-
-interface BookingFormData {
-  name: string;
-  email: string;
-  date: string;
-  rolls: number;
-  message: string;
-}
+import { ProductOrderService } from '../service/product-order.service';
+import  emailjs  from '@emailjs/browser';
 
 @Component({
   selector: 'app-product-order',
-  standalone: true,
   templateUrl: './product-order.component.html',
   styleUrls: ['./product-order.component.css'],
-  imports: [FormsModule, CommonModule]
+  standalone: true,
+  imports: [
+    CommonModule, // provides *ngIf, pipes like number
+    FormsModule   // provides ngModel
+  ],
+  providers: [DecimalPipe]
 })
-export class ProductOrderComponent implements OnInit {
-  // EmailJS Configuration - Replace with your actual values
-  private readonly EMAIL_SERVICE_ID = 'service_oe4f7b7';
-  private readonly EMAIL_TEMPLATE_ID = 'template_v3zlvem';
-  private readonly EMAIL_PUBLIC_KEY = '_ufdQINddLteRZ6dG';
-
-  formData: BookingFormData = {
+export class ProductOrderComponent {
+  // Properties referenced in template
+  formData = {
     name: '',
     email: '',
     date: '',
     rolls: 1,
     message: ''
   };
-
+  
   submitted = false;
   isSubmitting = false;
   errorMessage = '';
-  minDate: string;
+  minDate = new Date().toISOString().split('T')[0];
 
-  constructor() {
-    // Set minimum date to today
-    const today = new Date();
-    this.minDate = today.toISOString().split('T')[0];
-  }
+  constructor(private productOrderService: ProductOrderService) {}
 
-  ngOnInit(): void {
-    // Initialize EmailJS with your public key
-    emailjs.init(this.EMAIL_PUBLIC_KEY);
-  }
-
-  calculateTotal(): number {
-    const pricePerRoll = 1200;
+  calculateTotal() {
+    const rollPrice = 1200;
     const talentFee = 2000;
-    return (this.formData.rolls * pricePerRoll) + talentFee;
+    return this.formData.rolls * rollPrice + talentFee;
   }
 
-  async onSubmit(event: Event): Promise<void> {
-    event.preventDefault();
-    
-    if (!this.isFormValid() || this.isSubmitting) {
-      return;
-    }
+ onSubmit(event: Event) {
+  event.preventDefault();
+  this.isSubmitting = true;
 
-    this.isSubmitting = true;
-    this.errorMessage = '';
+  const orderData = {
+    ...this.formData,
+    total: this.calculateTotal()
+  };
 
-    try {
-      // Prepare email parameters
-      const emailParams = {
-        from_name: this.formData.name,
-        from_email: this.formData.email,
-        preferred_date: this.formatDate(this.formData.date),
-        number_of_rolls: this.formData.rolls,
-        additional_notes: this.formData.message || 'No additional notes',
-        total_cost: this.calculateTotal(),
-        // Add timestamp
-        booking_date: new Date().toLocaleString('en-US', {
-          dateStyle: 'full',
-          timeStyle: 'short'
-        })
+  // 1️⃣ Save to database first
+  this.productOrderService.createOrder(orderData).subscribe({
+    next: () => {
+      // 2️⃣ Send EmailJS email
+      const templateParams = {
+        name: orderData.name,
+        email: orderData.email,
+        date: orderData.date,
+        rolls: orderData.rolls,
+        message: orderData.message,
+        total: orderData.total
       };
+      emailjs.init('_ufdQINddLteRZ6dG');
 
-      // Send email using EmailJS
-      const response = await emailjs.send(
-        this.EMAIL_SERVICE_ID,
-        this.EMAIL_TEMPLATE_ID,
-        emailParams
-      );
-
-      console.log('Email sent successfully:', response);
-      this.submitted = true;
-      
-      // Reset form after 4 seconds
-      setTimeout(() => {
-        this.resetForm();
-      }, 4000);
-
-    } catch (error: any) {
-      console.error('Failed to send email:', error);
-      this.errorMessage = 'Failed to submit booking. Please try again or contact us directly.';
+      emailjs.send('service_oe4f7b7', 'template_v3zlvem', templateParams)
+        .then(
+          (response) => {
+            console.log('Email sent successfully!', response);
+            this.submitted = true;
+            this.isSubmitting = false;
+          },
+          (err) => {
+            console.error('Email failed to send', err);
+            this.errorMessage = 'Order saved, but failed to send email.';
+            this.isSubmitting = false;
+          }
+        );
+    },
+    error: (err: any) => {
+      console.error(err);
+      this.errorMessage = 'Something went wrong. Please try again.';
       this.isSubmitting = false;
     }
-  }
-
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
-
-  isFormValid(): boolean {
-    return !!(
-      this.formData.name.trim() &&
-      this.formData.email.trim() &&
-      this.formData.date &&
-      this.formData.rolls > 0
-    );
-  }
-
-  resetForm(): void {
-    this.formData = {
-      name: '',
-      email: '',
-      date: '',
-      rolls: 1,
-      message: ''
-    };
-    this.submitted = false;
-    this.isSubmitting = false;
-    this.errorMessage = '';
-  }
+  });
+}
 }
