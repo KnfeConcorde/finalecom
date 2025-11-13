@@ -1,13 +1,13 @@
 <section class="prints">
   <div class="container">
-    <h1 class="section-title">Limited Edition Prints</h1>
+    <h1 class="section-title">Film Prints</h1>
     <p class="section-subtitle">
-      Bring the beauty of film photography into your home. Each print is carefully developed and signed.
+      Own a piece of analog artistry. Limited edition prints from our film photography collection.
     </p>
 
     <!-- Success Message -->
     <div class="success-message" *ngIf="orderSubmitted">
-      <p>✓ Order placed successfully! We'll contact you soon.</p>
+      <p>✓ Order submitted successfully! We'll contact you with payment details.</p>
     </div>
 
     <!-- Error Message -->
@@ -15,54 +15,170 @@
       <p>✗ {{ errorMessage }}</p>
     </div>
 
-    <div class="prints-wrapper">
-      <!-- Print Card -->
+    <!-- Print Gallery -->
+    <div class="prints-grid">
       <div class="print-card" *ngFor="let print of prints">
-        <img [src]="print.image" [alt]="print.title" class="print-image" />
-        <h2>{{ print.title }}</h2>
-        <p class="price">₱{{ print.price }}</p>
-        <button class="btn-primary" (click)="addToCart(print)">Add to Cart</button>
+        <div class="print-image">
+          <img [src]="print.imageUrl" [alt]="print.title" />
+          <div class="print-overlay">
+            <button class="btn-view" (click)="selectPrint(print)">View Details</button>
+          </div>
+        </div>
+        <div class="print-info">
+          <h3>{{ print.title }}</h3>
+          <p class="print-location">{{ print.location }}</p>
+          <p class="print-price">₱{{ print.price | number }}</p>
+        </div>
       </div>
     </div>
 
-    <!-- Cart Summary -->
-    <div class="cart-summary" *ngIf="cart.length > 0">
-      <h3>Your Cart</h3>
-      <ul>
-        <li *ngFor="let item of cart">{{ item.title }} - ₱{{ item.price }}</li>
-      </ul>
-      <p class="estimate-label">Total:</p>
-      <p class="estimate-amount">₱{{ calculateCartTotal() | number }}</p>
+    <!-- Order Modal -->
+    <div class="modal-overlay" *ngIf="selectedPrint" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="btn-close" (click)="closeModal()">×</button>
+        
+        <div class="modal-grid">
+          <!-- Print Preview -->
+          <div class="modal-image">
+            <img [src]="selectedPrint.imageUrl" [alt]="selectedPrint.title" />
+            <div class="print-details">
+              <h2>{{ selectedPrint.title }}</h2>
+              <p class="location">{{ selectedPrint.location }}</p>
+              <p class="description">{{ selectedPrint.description }}</p>
+              <div class="specs">
+                <span class="spec-item">Film: {{ selectedPrint.filmType }}</span>
+                <span class="spec-item">Limited: {{ selectedPrint.edition }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Form -->
+          <div class="modal-form">
+            <h3>Order Print</h3>
+            
+            <form (ngSubmit)="onSubmit($event)" #orderForm="ngForm">
+              <div class="form-group">
+                <label for="size">Print Size <span class="required">*</span></label>
+                <select 
+                  id="size" 
+                  [(ngModel)]="orderData.size" 
+                  name="size" 
+                  required
+                  (change)="updatePrice()"
+                >
+                  <option value="">Select size</option>
+                  <option value="5x7">5x7 inches - ₱{{ selectedPrint.price | number }}</option>
+                  <option value="8x10">8x10 inches - ₱{{ (selectedPrint.price * 1.5) | number }}</option>
+                  <option value="11x14">11x14 inches - ₱{{ (selectedPrint.price * 2) | number }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="finish">Paper Finish <span class="required">*</span></label>
+                <select id="finish" [(ngModel)]="orderData.finish" name="finish" required>
+                  <option value="">Select finish</option>
+                  <option value="matte">Matte</option>
+                  <option value="glossy">Glossy</option>
+                  <option value="lustre">Lustre</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="quantity">Quantity <span class="required">*</span></label>
+                <input
+                  id="quantity"
+                  type="number"
+                  [(ngModel)]="orderData.quantity"
+                  name="quantity"
+                  min="1"
+                  max="10"
+                  required
+                  (change)="updatePrice()"
+                  #quantityInput="ngModel"
+                />
+                <span class="error-message" *ngIf="quantityInput.invalid && quantityInput.touched">
+                  Please enter a valid quantity (1-10)
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input
+                  id="name"
+                  type="text"
+                  [(ngModel)]="orderData.name"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                  #nameInput="ngModel"
+                />
+                <span class="error-message" *ngIf="nameInput.invalid && nameInput.touched">
+                  Name is required
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input
+                  id="email"
+                  type="email"
+                  [(ngModel)]="orderData.email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  email
+                  #emailInput="ngModel"
+                />
+                <span class="error-message" *ngIf="emailInput.invalid && emailInput.touched">
+                  Please enter a valid email
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label for="address">Shipping Address <span class="required">*</span></label>
+                <textarea
+                  id="address"
+                  rows="3"
+                  [(ngModel)]="orderData.address"
+                  name="address"
+                  placeholder="Enter your complete address"
+                  required
+                  #addressInput="ngModel"
+                ></textarea>
+                <span class="error-message" *ngIf="addressInput.invalid && addressInput.touched">
+                  Address is required
+                </span>
+              </div>
+
+              <!-- Order Total -->
+              <div class="order-total">
+                <div class="total-row">
+                  <span>Subtotal:</span>
+                  <span>₱{{ calculateSubtotal() | number }}</span>
+                </div>
+                <div class="total-row">
+                  <span>Shipping:</span>
+                  <span>₱150</span>
+                </div>
+                <div class="total-row total-final">
+                  <span>Total:</span>
+                  <span>₱{{ calculateTotal() | number }}</span>
+                </div>
+              </div>
+
+              <button 
+                type="submit" 
+                class="btn-primary" 
+                [disabled]="!orderForm.valid || isSubmitting || orderSubmitted"
+              >
+                <span *ngIf="!isSubmitting && !orderSubmitted">Place Order</span>
+                <span *ngIf="isSubmitting">Processing...</span>
+                <span *ngIf="orderSubmitted">Order Placed!</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Order Form -->
-    <form class="booking-form" (ngSubmit)="submitOrder($event)" #orderForm="ngForm">
-      <div class="form-group">
-        <label for="name">Full Name <span class="required">*</span></label>
-        <input id="name" type="text" [(ngModel)]="orderData.name" name="name" required #nameInput="ngModel"/>
-        <span class="error-message" *ngIf="nameInput.invalid && nameInput.touched">
-          Name is required
-        </span>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email Address <span class="required">*</span></label>
-        <input id="email" type="email" [(ngModel)]="orderData.email" name="email" required email #emailInput="ngModel"/>
-        <span class="error-message" *ngIf="emailInput.invalid && emailInput.touched">
-          Please enter a valid email
-        </span>
-      </div>
-
-      <div class="form-group">
-        <label for="message">Additional Notes</label>
-        <textarea id="message" rows="4" [(ngModel)]="orderData.message" name="message" placeholder="Special instructions or preferred shipping..."></textarea>
-      </div>
-
-      <button type="submit" class="btn-primary" [disabled]="!orderForm.valid || orderSubmitted || isSubmitting">
-        <span *ngIf="!isSubmitting && !orderSubmitted">Place Order</span>
-        <span *ngIf="isSubmitting">Sending...</span>
-        <span *ngIf="orderSubmitted">Submitted!</span>
-      </button>
-    </form>
   </div>
 </section>

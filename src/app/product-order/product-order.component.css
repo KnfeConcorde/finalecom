@@ -1,17 +1,16 @@
 /* ======================
-   Booking Page
+   Prints Page
    ====================== */
 
-.booking {
+.prints {
   padding: 6rem 0;
   background-color: #ffffff;
-  text-align: center;
-  overflow-x: hidden;
+  min-height: 100vh;
 }
 
 .container {
   width: 90%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -20,17 +19,19 @@
   font-weight: 700;
   color: #1a1a1a;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .section-subtitle {
   font-size: 1.125rem;
   color: #666;
   max-width: 700px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 3rem;
   line-height: 1.6;
+  text-align: center;
 }
 
-/* Success Message */
+/* Success/Error Messages */
 .success-message {
   background-color: #d4edda;
   border: 1px solid #c3e6cb;
@@ -42,9 +43,9 @@
   margin-left: auto;
   margin-right: auto;
   animation: slideDown 0.3s ease-out;
+  text-align: center;
 }
 
-/* Error Banner */
 .error-banner {
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;
@@ -56,6 +57,7 @@
   margin-left: auto;
   margin-right: auto;
   animation: slideDown 0.3s ease-out;
+  text-align: center;
 }
 
 @keyframes slideDown {
@@ -69,128 +71,263 @@
   }
 }
 
-.booking-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 3rem;
-  flex-wrap: wrap;
+/* ======================
+   Print Gallery
+   ====================== */
+
+.prints-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
   margin-top: 2rem;
 }
 
-/* ======================
-   Pricing Card
-   ====================== */
-
-.pricing-card {
-  flex: 1;
-  min-width: 300px;
-  max-width: 380px;
+.print-card {
   background-color: #fafafa;
   border-radius: 12px;
+  overflow: hidden;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-  padding: 2rem;
-  text-align: left;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-.pricing-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+.print-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.pricing-card h2 {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
+.print-image {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  background-color: #e0e0e0;
+}
+
+.print-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.print-card:hover .print-image img {
+  transform: scale(1.08);
+}
+
+.print-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.print-card:hover .print-overlay {
+  opacity: 1;
+}
+
+.btn-view {
+  background-color: #fff;
   color: #1a1a1a;
+  border: none;
+  padding: 0.75rem 1.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.price {
+.btn-view:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.print-info {
+  padding: 1.5rem;
+}
+
+.print-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.print-location {
+  font-size: 0.95rem;
+  color: #777;
+  margin-bottom: 0.75rem;
+}
+
+.print-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ======================
+   Modal
+   ====================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease-out;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 16px;
+  max-width: 1100px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  background-color: #1a1a1a;
+  transform: rotate(90deg);
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+/* ======================
+   Modal Image Side
+   ====================== */
+
+.modal-image {
+  padding: 2rem;
+  background-color: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.print-details h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #111;
-  margin-bottom: 0.25rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
 }
 
-.price span,
-.fee span {
-  font-weight: 400;
+.print-details .location {
   font-size: 1rem;
   color: #777;
+  margin-bottom: 1rem;
 }
 
-.fee {
-  font-size: 1.25rem;
-  color: #333;
+.print-details .description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
-.pricing-details {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.pricing-details li {
-  padding: 0.5rem 0;
-  color: #555;
-  font-size: 1rem;
-  border-bottom: 1px solid #eee;
-}
-
-.pricing-details li:last-child {
-  border-bottom: none;
-}
-
-/* Total Estimate */
-.total-estimate {
-  margin-top: 1.5rem;
-}
-
-.total-estimate hr {
-  border: none;
-  border-top: 2px solid #e0e0e0;
-  margin: 1.5rem 0 1rem;
-}
-
-.estimate-label {
+.spec-item {
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   font-size: 0.9rem;
-  color: #777;
-  margin-bottom: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.estimate-amount {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.estimate-breakdown {
-  font-size: 0.875rem;
-  color: #999;
-  margin-top: 0.25rem;
+  color: #333;
+  border: 1px solid #e0e0e0;
 }
 
 /* ======================
-   Booking Form
+   Modal Form Side
    ====================== */
 
-.booking-form {
-  flex: 1;
-  min-width: 320px;
-  max-width: 500px;
-  background-color: #fdfdfd;
-  border-radius: 12px;
+.modal-form {
   padding: 2rem 2.5rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-  text-align: left;
+  background-color: #fff;
+}
+
+.modal-form h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   position: relative;
 }
 
@@ -236,7 +373,7 @@ textarea.ng-invalid.ng-touched {
 
 textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 80px;
 }
 
 .error-message {
@@ -244,16 +381,31 @@ textarea {
   color: #e74c3c;
   font-size: 0.85rem;
   margin-top: 0.35rem;
-  animation: fadeIn 0.2s ease-in;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Order Total */
+.order-total {
+  background-color: #f8f8f8;
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.total-final {
+  border-top: 2px solid #ddd;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .btn-primary {
@@ -285,21 +437,24 @@ textarea {
    Responsive Design
    ====================== */
 
+@media (max-width: 1024px) {
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-image {
+    border-radius: 16px 16px 0 0;
+  }
+}
+
 @media (max-width: 768px) {
-  .booking {
+  .prints {
     padding: 4rem 0;
   }
 
-  .booking-wrapper {
-    flex-direction: column;
-    align-items: center;
+  .prints-grid {
+    grid-template-columns: 1fr;
     gap: 2rem;
-  }
-
-  .pricing-card,
-  .booking-form {
-    width: 100%;
-    max-width: 600px;
   }
 
   .section-title {
@@ -310,7 +465,15 @@ textarea {
     font-size: 1rem;
   }
 
-  .booking-form {
+  .modal-content {
+    margin: 1rem;
+  }
+
+  .modal-form {
+    padding: 1.5rem;
+  }
+
+  .modal-image {
     padding: 1.5rem;
   }
 }
@@ -320,11 +483,17 @@ textarea {
     font-size: 1.75rem;
   }
 
-  .price {
-    font-size: 1.75rem;
+  .print-info h3 {
+    font-size: 1.25rem;
   }
 
-  .estimate-amount {
-    font-size: 1.75rem;
+  .print-details h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn-close {
+    width: 36px;
+    height: 36px;
+    font-size: 1.5rem;
   }
 }

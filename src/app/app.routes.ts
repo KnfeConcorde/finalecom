@@ -5,9 +5,10 @@ import { ProductOrderComponent } from './product-order/product-order.component';
 import { CustomerServiceComponent } from './customer-service/customer-service.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { GalleryComponent } from './gallery/gallery.component';
-
+import { ProductCategoryComponent } from './product-category/product-category.component';
 export const routes: Routes = [
   { path: '', component: MainBodyComponent },
+  { path: 'prints', component: ProductCategoryComponent },
   { path: 'cart', component: ShoppingCartComponent },
   { path: 'gallery', component: GalleryComponent },
   { path: 'customer', component: CustomerServiceComponent },
